@@ -203,13 +203,13 @@ public double absoluteBearing(double x1, double y1, double x2, double y2) {
 
 **Sample robot:** [RunToCenter](http://mark.random-article.com/robocode/lessons/RunToCenter.java) a robot that moves to the center of the battlefield no matter where he starts by getting an absolute bearing between his point and the center of the battlefield. Note that he normalizes the absolute bearing (by calling normalizeBearing) for more efficient turning. Match him up against Walls to see how one takes the edges, and the other takes the center.
 
-# Predictive Targting: Using Trigonometry to impress your friends and destroy your enemies
+## Predictive Targting: Using Trigonometry to impress your friends and destroy your enemies
 
 If you look at how RunToCenter (or most any of the previous robots) fares against Walls, they always miss. The reason this problem occurs is because it takes time for the bullet to travel. By the time the bullet gets there, Walls has already moved on.
 
 If we wanted to be able to hit Walls (or any other robot) more often, we'd need to be able to predict where he will be in the future, but how can we do that?
 
-## Distance = Rate x Time**
+## Distance = Rate x Time
 
 Using D = RxT we can figure out how long it will take a bullet to get there.
 
