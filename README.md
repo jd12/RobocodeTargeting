@@ -97,3 +97,54 @@ Sample robot: [EfficientShooter](http://mark.random-article.com/robocode/lessons
 3. Normalize his bearings
 4. Avoid premature shooting
 
+## Assignment Part II: Create AdvancedEnemyBot 
+
+You may find the following information useful. These are links to Sun's online Java tutorials.
+
+[What is Inheritance?](http://java.sun.com/docs/books/tutorial/java/concepts/inheritance.html) - very basic primer on inheritance in OO languages
+[Managing Inheritance](http://java.sun.com/docs/books/tutorial/java/javaOO/subclasses.html) - how class hierarchies work
+Specifications
+
+Write a class that extends the EnemyBot class you wrote previously.
+
+Details
+
+These steps are deliniated in such a way that you should be able to compile after each step to make sure your code is working properly.
+
+1. In a file called "AdvancedEnemyBot.java" please declare a public class called `AdvancedEnemyBot` that extends `EnemyBot`. (Both files need to be in the same directory AND need to have the same package line at the top.)
+2. Declare 2 new private variables in AdvancedEnemyBot called: x and y. They will be of type `double`.
+3. Add the accessor methods `getX()` and `getY()`; they will return the appropriate variables.
+4. Override the parent class' `reset()` method and write the following code inside it: 
+	1. first, call the parent's reset() method as super.reset() so that it will blank out all of its variables; 
+	2. set all the AdvancedEnemyBot's private class variables to 0.
+5. Make a constructor for the class which simply calls the reset() method. (Your own, not the parent class'.)
+6. Write a new update() method which takes two parameters: a ScannedRobotEvent (call it e) and a Robot (call it robot -- ain't case-sensetivity grand?). (Note that you are not overriding the parent class' update() method because it takes only one parameter.)
+	Inside the AdvancedEnemyBot's update() method, please do the following:
+
+	1. Call the parent class' update() method with super.update(), passing it the ScannedRobotEvent that was passed to this method. (And yes, I realize that using the super keyword is unnecessary here, but it makes the code more obvious and self-documenting.)
+	2. Compute the absolute bearing between the robot and the enemy with the following code:
+		```java
+		double absBearingDeg = (robot.getHeading() + e.getBearing());
+		if (absBearingDeg < 0) absBearingDeg += 360;
+		```
+	3. Set the x variable using the following code:
+		```java
+		// yes, you use the _sine_ to get the X value because 0 deg is North
+		x = robot.getX() + Math.sin(Math.toRadians(absBearingDeg)) * e.getDistance();
+		```
+		In a nutshell, this line computes the lentgh of the opposite side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's X value.
+	4. Set the y variable using the following code:
+		```java
+		// yes, you use the _cosine_ to get the Y value because 0 deg is North
+		y = robot.getY() + Math.cos(Math.toRadians(absBearingDeg)) * e.getDistance();
+		```
+		Similarly, this line computes the lentgh of the adjacent side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's Y value.
+7. Make an accessor method called getFutureX() which takes a long parameter (call it when) and returns a double. Use the following code to implement it:
+```java
+return x + Math.sin(Math.toRadians(getHeading())) * getVelocity() * when;
+```
+8. Lastly, make an accessor method called getFutureY() which takes a long parameter (call it when) and returns a double. Use the following code to implement it:
+```java
+return y + Math.cos(Math.toRadians(getHeading())) * getVelocity() * when;
+```
+Note that getFutureX() and getFutureY() are much like the getX() and getY() above except that it uses Rate x Time (getVelocity() * when) instead of distance (e.getDistance())
