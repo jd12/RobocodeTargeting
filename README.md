@@ -52,7 +52,7 @@ A non-normalized bearing could be smaller than -180 or larger than +180. We like
 
 ```java
 // normalizes a bearing to between +180 and -180
-double normalizeBearing(double angle) {
+public double normalizeBearing(double angle) {
 	while (angle >  180) angle -= 360;
 	while (angle < -180) angle += 360;
 	return angle;
@@ -179,7 +179,7 @@ Another application of absolute bearings is to get the angle between two arbitra
 
 ```java
 // computes the absolute bearing between two points
-double absoluteBearing(double x1, double y1, double x2, double y2) {
+public double absoluteBearing(double x1, double y1, double x2, double y2) {
 	double xo = x2-x1;
 	double yo = y2-y1;
 	double hyp = Point2D.distance(x1, y1, x2, y2);
@@ -203,4 +203,96 @@ double absoluteBearing(double x1, double y1, double x2, double y2) {
 
 **Sample robot:** [RunToCenter](http://mark.random-article.com/robocode/lessons/RunToCenter.java) a robot that moves to the center of the battlefield no matter where he starts by getting an absolute bearing between his point and the center of the battlefield. Note that he normalizes the absolute bearing (by calling normalizeBearing) for more efficient turning. Match him up against Walls to see how one takes the edges, and the other takes the center.
 
+# Predictive Targting: Using Trigonometry to impress your friends and destroy your enemies
 
+If you look at how RunToCenter (or most any of the previous robots) fares against Walls, they always miss. The reason this problem occurs is because it takes time for the bullet to travel. By the time the bullet gets there, Walls has already moved on.
+
+If we wanted to be able to hit Walls (or any other robot) more often, we'd need to be able to predict where he will be in the future, but how can we do that?
+
+## Distance = Rate x Time**
+
+Using D = RxT we can figure out how long it will take a bullet to get there.
+
+* Distance: can be found by calling enemy.getDistance()
+* Rate: per the [Robocode FAQ](http://www.phil.uu.nl/java/robocode/robocode-faq.txt), a bullet travels at a rate of 20 - firepower * 3.
+* Time: we can compute the time by solving for it: D = RxT --> T = D/R
+
+The following code does it:
+
+```java
+// calculate firepower based on distance
+double firePower = Math.min(500 / enemy.getDistance(), 3);
+// calculate speed of bullet
+double bulletSpeed = 20 - firePower * 3;
+// distance = rate * time, solved for time
+long time = (long)(enemy.getDistance() / bulletSpeed);
+```
+
+## Getting Future X,Y Coordinates
+
+Next, we can use the AdvancedEnemyBot, which contains the methods getFutureX() and getFutureY(). To make use of the new features, we need to change our code from:
+
+```java
+public class Shooter extends AdvancedRobot {
+	private EnemyBot enemy = new EnemyBot();
+```
+
+to:
+
+```java
+public class Shooter extends AdvancedRobot {
+	private AdvancedEnemyBot enemy = new AdvancedEnemyBot();
+```
+
+Then in the onScannedRobot() method, we need to change the code from:
+
+```java
+public void onScannedRobot(ScannedRobotEvent e) {
+
+	// track if we have no enemy, the one we found is significantly
+	// closer, or we scanned the one we've been tracking.
+	if ( enemy.none() || e.getDistance() < enemy.getDistance() - 70 ||
+			e.getName().equals(enemy.getName())) {
+
+		// track him
+		enemy.update(e);
+	}
+	...
+```
+
+to:
+
+```java
+public void onScannedRobot(ScannedRobotEvent e) {
+
+	// track if we have no enemy, the one we found is significantly
+	// closer, or we scanned the one we've been tracking.
+	if ( enemy.none() || e.getDistance() < enemy.getDistance() - 70 ||
+			e.getName().equals(enemy.getName())) {
+
+		// track him using the NEW update method
+		enemy.update(e, this);
+	}
+	...
+```
+
+The alert student will note that it is entirely possible to use the old update method, with unfortunate results. Fair warning. One way to avoid this is to go back to the EnemyBot class and declare its update method to be final, which has the effect of making it uninheritable.
+
+## Turning the Gun to the Predicted Point
+
+Lastly, we get the absolute bearing between our tank and the predicted location using the absoluteBearing function above. We then find the difference between the absolute bearing and the current gun heading and turn the gun, normalizing the turn to take the shortest path there.
+
+```java
+// calculate gun turn to predicted x,y location
+double futureX = enemy.getFutureX(time);
+double futureY = enemy.getFutureY(time);
+double absDeg = absoluteBearing(getX(), getY(), futureX, futureY);
+// turn the gun to the predicted x,y location
+setTurnGunRight(normalizeBearing(absDeg - getGunHeading()));
+``` 
+
+Sample robot: [PredictiveShooter](http://mark.random-article.com/robocode/lessons/PredictiveShooter.java) uses the stuff described above to anticipate where his enemy will be. Match him up against Walls and watch the magic happen.
+
+# Assignment Part III
+
+1. Have your robot(i.e. yourNameRobot) use the AdvancedEnemyBot class to predictively shoot at opponents.
