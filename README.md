@@ -159,3 +159,48 @@ return y + Math.cos(Math.toRadians(getHeading())) * getVelocity() * when;
 ```
 
 Note that `getFutureX()` and `getFutureY()` are much like the `getX()` and `getY()` above except that it uses Rate x Time (`getVelocity()` * when) instead of distance (`e.getDistance()`)
+
+# Part III: Improved Targeting
+
+In this part, you'll explore a practical application of Trigonometry to improve your targeting capabilities.
+
+## Digression: Absolute Bearings
+
+Before we begin, let's revisit the concept of bearings.
+
+In contrast to a relative bearing, an absolute bearing is a value between 0 and +360 degrees. The following illustration shows bothe the relative and absolute bearing from one robot to another:
+
+![Image of absolute bearing]
+(http://mark.random-article.com/robocode/rel_vs_norm_bearing.jpg)
+
+Absolute bearings are often useful. You computed an absolute bearing from a relative bearing in your AdvancedEnemyBot class to get the x,y coordinates of an enemy.
+
+Another application of absolute bearings is to get the angle between two arbitrary points. The following function will do this for you:
+
+```java
+// computes the absolute bearing between two points
+double absoluteBearing(double x1, double y1, double x2, double y2) {
+	double xo = x2-x1;
+	double yo = y2-y1;
+	double hyp = Point2D.distance(x1, y1, x2, y2);
+	double arcSin = Math.toDegrees(Math.asin(xo / hyp));
+	double bearing = 0;
+
+	if (xo > 0 && yo > 0) { // both pos: lower-Left
+		bearing = arcSin;
+	} else if (xo < 0 && yo > 0) { // x neg, y pos: lower-right
+		bearing = 360 + arcSin; // arcsin is negative here, actually 360 - ang
+	} else if (xo > 0 && yo < 0) { // x pos, y neg: upper-left
+		bearing = 180 - arcSin;
+	} else if (xo < 0 && yo < 0) { // both neg: upper-right
+		bearing = 180 - arcSin; // arcsin is negative here, actually 180 + ang
+	}
+
+	return bearing;
+}
+```
+**Note:** To use the above function in your robot, you will need to import java.awt.geom.Point2D.
+
+**Sample robot:** [RunToCenter](http://mark.random-article.com/robocode/lessons/RunToCenter.java) a robot that moves to the center of the battlefield no matter where he starts by getting an absolute bearing between his point and the center of the battlefield. Note that he normalizes the absolute bearing (by calling normalizeBearing) for more efficient turning. Match him up against Walls to see how one takes the edges, and the other takes the center.
+
+
