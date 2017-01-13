@@ -35,7 +35,7 @@ setFire(Math.min(400 / enemy.getDistance(), 3));
 
 (Feel free to experiment with a different value instead of 400.)
 
-Sample robot: [Shooter](http://mark.random-article.com/robocode/lessons/Shooter.java) is a robot that features independent gun movement and uses both of the above formulas to shoot at an enemy. Match him up against SittingDuck, Target, Fire, TrackFire, Corners, and maybe even Tracker and watch him spin and shoot.
+**Sample robot:** [Shooter](http://mark.random-article.com/robocode/lessons/Shooter.java) is a robot that features independent gun movement and uses both of the above formulas to shoot at an enemy. Match him up against SittingDuck, Target, Fire, TrackFire, Corners, and maybe even Tracker and watch him spin and shoot.
 
 # More Efficient Aiming
 
@@ -69,7 +69,7 @@ double turn = getHeading() - getGunHeading() + e.getBearing();
 setTurnGunRight(normalizeBearing(turn));
 ```
 
-Sample robot: [NormalizedShooter](http://mark.random-article.com/robocode/lessons/NormalizedShooter.java) which normalizes the gun turns by using the above function.
+**Sample robot:** [NormalizedShooter](http://mark.random-article.com/robocode/lessons/NormalizedShooter.java) which normalizes the gun turns by using the above function.
 
 ## Avoiding Premature Shooting
 
@@ -291,7 +291,7 @@ double absDeg = absoluteBearing(getX(), getY(), futureX, futureY);
 setTurnGunRight(normalizeBearing(absDeg - getGunHeading()));
 ``` 
 
-Sample robot: [PredictiveShooter](http://mark.random-article.com/robocode/lessons/PredictiveShooter.java) uses the stuff described above to anticipate where his enemy will be. Match him up against Walls and watch the magic happen.
+**Sample robot:** [PredictiveShooter](http://mark.random-article.com/robocode/lessons/PredictiveShooter.java) uses the stuff described above to anticipate where his enemy will be. Match him up against Walls and watch the magic happen.
 
 # Assignment Part III
 
