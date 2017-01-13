@@ -85,7 +85,15 @@ The following code snippet tests for both of these:
 // if the gun is cool and we're pointed at the target, shoot!
 if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 10)
 	setFire(firePower);
-  ```
+ ```
   
 (Feel free to test with values other than 10. Remember to create a variable to store this value so you don't have "magic numbers" in your code)
 Sample robot: [EfficientShooter](http://mark.random-article.com/robocode/lessons/EfficientShooter.java) who uses the normalizeBearing function for more efficient gun turning and avoids premature shooting by using the above if statement.
+
+## Assignment Part I
+
+1. Seperate gun movement from tank movement
+2. Calculate firepower
+3. Normalize his bearings
+4. Avoid premature shooting
+
