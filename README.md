@@ -33,7 +33,7 @@ With this formula, as the enemy distance increases, the firepower decreases. Lik
 setFire(Math.min(400 / enemy.getDistance(), 3));
 ```
 
-(Feel free to experiment with a different value instead of 400.)
+(Feel free to experiment with a different value instead of 400. Remember to create a variable to store this value so you don't have "magic numbers" in your code.)
 
 **Sample robot:** [Shooter](http://mark.random-article.com/robocode/lessons/Shooter.java) is a robot that features independent gun movement and uses both of the above formulas to shoot at an enemy. Match him up against SittingDuck, Target, Fire, TrackFire, Corners, and maybe even Tracker and watch him spin and shoot.
 
