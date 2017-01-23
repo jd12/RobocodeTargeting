@@ -103,7 +103,7 @@ You may find the following information useful. These are links to Sun's online J
 
 [What is Inheritance?](http://java.sun.com/docs/books/tutorial/java/concepts/inheritance.html) - very basic primer on inheritance in OO languages
 
-[Managing Inheritance](http://java.sun.com/docs/books/tutorial/java/javaOO/subclasses.html) - how class hierarchies work
+[Managing Inheritance](https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html) - how class hierarchies work
 Specifications
 
 Write a class that extends the EnemyBot class you wrote previously.
