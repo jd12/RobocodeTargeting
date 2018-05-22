@@ -45,8 +45,7 @@ As you may have noticed, Shooter has a problem: sometimes he turns his gun barre
 
 The problem is the result of getting a non-normalized bearing from the simple aiming formula above. A normalized bearing (like the kind you get in a ScannedRobotEvent) is a bearing between -180 and +180 degrees as depicted in the following illustration:
 
-![Image of bearings]
-(http://mark.random-article.com/robocode/bearings.jpg)
+![Image of bearings](http://mark.random-article.com/robocode/bearings.jpg)
 
 A non-normalized bearing could be smaller than -180 or larger than +180. We like to work with normalized bearings because they make for more efficient movement. To normalize a bearing, use the following function:
 
@@ -168,10 +167,9 @@ In this part, you'll explore a practical application of Trigonometry to improve 
 
 Before we begin, let's revisit the concept of bearings.
 
-In contrast to a relative bearing, an absolute bearing is a value between 0 and +360 degrees. The following illustration shows bothe the relative and absolute bearing from one robot to another:
+In contrast to a relative bearing, an absolute bearing is a value between 0 and +360 degrees. The following illustration shows both the relative and absolute bearing from one robot to another:
 
-![Image of absolute bearing]
-(http://mark.random-article.com/robocode/rel_vs_norm_bearing.jpg)
+![Image of absolute bearing](http://mark.random-article.com/robocode/rel_vs_norm_bearing.jpg)
 
 Absolute bearings are often useful. You computed an absolute bearing from a relative bearing in your AdvancedEnemyBot class to get the x,y coordinates of an enemy.
 
