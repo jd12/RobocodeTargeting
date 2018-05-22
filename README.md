@@ -35,7 +35,7 @@ setFire(Math.min(400 / enemy.getDistance(), 3));
 
 (Feel free to experiment with a different value instead of 400. Remember to create a variable to store this value so you don't have "magic numbers" in your code.)
 
-**Sample robot:** [Shooter](http://mark.random-article.com/robocode/lessons/Shooter.java) is a robot that features independent gun movement and uses both of the above formulas to shoot at an enemy. Match him up against SittingDuck, Target, Fire, TrackFire, Corners, and maybe even Tracker and watch him spin and shoot.
+**Sample robot:** [Shooter](./templateBots/Shooter.java) is a robot that features independent gun movement and uses both of the above formulas to shoot at an enemy. Match him up against SittingDuck, Target, Fire, TrackFire, Corners, and maybe even Tracker and watch him spin and shoot.
 
 # More Efficient Aiming
 
@@ -72,7 +72,7 @@ double turn = getHeading() - getGunHeading() + e.getBearing();
 setTurnGunRight(normalizeBearing(turn));
 ```
 
-**Sample robot:** [NormalizedShooter](http://mark.random-article.com/robocode/lessons/NormalizedShooter.java) which normalizes the gun turns by using the above function.
+**Sample robot:** [NormalizedShooter](./templateBots/NormalizedShooter.java) which normalizes the gun turns by using the above function.
 
 ## Avoiding Premature Shooting
 
@@ -91,7 +91,7 @@ if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 10)
  ```
 
 (Feel free to test with values other than 10. Remember to create a variable to store this value so you don't have "magic numbers" in your code)
-Sample robot: [EfficientShooter](http://mark.random-article.com/robocode/lessons/EfficientShooter.java) who uses the normalizeBearing function for more efficient gun turning and avoids premature shooting by using the above if statement.
+Sample robot: [EfficientShooter](./templateBots/EfficientShooter.java) who uses the normalizeBearing function for more efficient gun turning and avoids premature shooting by using the above if statement.
 
 ## Assignment Part I
 
@@ -205,7 +205,7 @@ public double absoluteBearing(double x1, double y1, double x2, double y2) {
 ```
 **Note:** To use the above function in your robot, you will need to import java.awt.geom.Point2D.
 
-**Sample robot:** [RunToCenter](http://mark.random-article.com/robocode/lessons/RunToCenter.java) a robot that moves to the center of the battlefield no matter where he starts by getting an absolute bearing between his point and the center of the battlefield. Note that he normalizes the absolute bearing (by calling normalizeBearing) for more efficient turning. Match him up against Walls to see how one takes the edges, and the other takes the center.
+**Sample robot:** [RunToCenter](./templateBots/RunToCenter.java) a robot that moves to the center of the battlefield no matter where he starts by getting an absolute bearing between his point and the center of the battlefield. Note that he normalizes the absolute bearing (by calling normalizeBearing) for more efficient turning. Match him up against Walls to see how one takes the edges, and the other takes the center.
 
 ## Predictive Targting: Using Trigonometry to impress your friends and destroy your enemies
 
@@ -295,7 +295,7 @@ double absDeg = absoluteBearing(getX(), getY(), futureX, futureY);
 setTurnGunRight(normalizeBearing(absDeg - getGunHeading()));
 ```
 
-**Sample robot:** [PredictiveShooter](http://mark.random-article.com/robocode/lessons/PredictiveShooter.java) uses the stuff described above to anticipate where his enemy will be. Match him up against Walls and watch the magic happen.
+**Sample robot:** [PredictiveShooter](./templateBots/PredictiveShooter.java) uses the stuff described above to anticipate where his enemy will be. Match him up against Walls and watch the magic happen.
 
 # Assignment Part III
 
