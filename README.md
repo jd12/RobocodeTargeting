@@ -6,9 +6,9 @@ In this project, you will learn the basics of turning and aiming your gun.
 
 ## Independent Gun Movement
 
-In the last project you interacted with robots like [EnemyTracker](http://mark.random-article.com/robocode/lessons/EnemyTracker.java) and [EnemyOrCloser](http://mark.random-article.com/robocode/lessons/EnemyOrCloser.java), but they had a big shortcoming: they all had to be driving toward their enemy to shoot at it. As we recall from Battlefield Basics, your robot consists of three parts, all of which can move independently, and the tank part moves slowest of all.
+In the last project you interacted with robots like [EnemyTracker](https://github.com/jd12/Robocode-Scanning/blob/master/sampleBots/EnemyTracker.java) and [EnemyOrCloser](https://github.com/jd12/Robocode-Scanning/blob/master/sampleBots/EnemyOrCloser.java), but they had a big shortcoming: they all had to be driving toward their enemy to shoot at it. As we recall from Battlefield Basics, your robot consists of three parts, all of which can move independently, and the tank part moves slowest of all.
 
-One improvement we could make is to divorce gun movement from robot movement. This can be done easily by calling [setAdjustGunForRobotTurn(true)](http://mark.random-article.com/robocode/javadoc/robocode/Robot.html#setAdjustGunForRobotTurn(boolean)). Thereafter, you can make calls like [turnGunRight()](http://mark.random-article.com/robocode/javadoc/robocode/Robot.html#turnGunRight(double)) (or better yet [setTurnGunRight()](http://mark.random-article.com/robocode/javadoc/robocode/AdvancedRobot.html#setTurnGunRight(double))) to turn the gun independently. Now you can turn the gun one direction and move the tank a different direction.
+One improvement we could make is to divorce gun movement from robot movement. This can be done easily by calling [setAdjustGunForRobotTurn(true)](https://jd12.github.io/RobocodeInitial/robocode/Robot.html#setAdjustGunForRobotTurn(boolean)). Thereafter, you can make calls like [turnGunRight()](https://jd12.github.io/RobocodeInitial/robocode/Robot.html#turnGunRight(double)) (or better yet [setTurnGunRight()](https://jd12.github.io/RobocodeInitial/robocode/AdvancedRobot.html#setTurnGunRight(double))) to turn the gun independently. Now you can turn the gun one direction and move the tank a different direction.
 
 ## Simple Aiming Formula
 
@@ -86,7 +86,7 @@ The following code snippet tests for both of these:
 if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 10)
 	setFire(firePower);
  ```
-  
+
 (Feel free to test with values other than 10. Remember to create a variable to store this value so you don't have "magic numbers" in your code)
 Sample robot: [EfficientShooter](http://mark.random-article.com/robocode/lessons/EfficientShooter.java) who uses the normalizeBearing function for more efficient gun turning and avoids premature shooting by using the above if statement.
 
@@ -97,7 +97,7 @@ Sample robot: [EfficientShooter](http://mark.random-article.com/robocode/lessons
 3. Normalize his bearings
 4. Avoid premature shooting
 
-## Assignment Part II: Create AdvancedEnemyBot 
+## Assignment Part II: Create AdvancedEnemyBot
 
 You may find the following information useful. These are links to Sun's online Java tutorials.
 
@@ -115,8 +115,8 @@ These steps are deliniated in such a way that you should be able to compile afte
 1. In a file called "AdvancedEnemyBot.java" please declare a public class called `AdvancedEnemyBot` that extends `EnemyBot`. (Both files need to be in the same directory AND need to have the same package line at the top.)
 2. Declare 2 new private variables in AdvancedEnemyBot called: x and y. They will be of type `double`.
 3. Add the accessor methods `getX()` and `getY()`; they will return the appropriate variables.
-4. Override the parent class' `reset()` method and write the following code inside it: 
-	1. first, call the parent's reset() method as super.reset() so that it will blank out all of its variables; 
+4. Override the parent class' `reset()` method and write the following code inside it:
+	1. first, call the parent's reset() method as super.reset() so that it will blank out all of its variables;
 	2. set all the AdvancedEnemyBot's private class variables to 0.
 5. Make a constructor for the class which simply calls the reset() method. (Your own, not the parent class'.)
 6. Write a new update() method which takes two parameters: a ScannedRobotEvent (call it e) and a Robot (call it robot -- ain't case-sensetivity grand?). (Note that you are not overriding the parent class' update() method because it takes only one parameter.)
@@ -124,27 +124,27 @@ These steps are deliniated in such a way that you should be able to compile afte
 
 	1. Call the parent class' `update()` method with `super.update()`, passing it the ScannedRobotEvent that was passed to this method. (And yes, I realize that using the super keyword is unnecessary here, but it makes the code more obvious and self-documenting.)
 	2. Compute the absolute bearing between the robot and the enemy with the following code:
-	
+
 		```java
 		double absBearingDeg = (robot.getHeading() + e.getBearing());
 		if (absBearingDeg < 0) absBearingDeg += 360;
 		```
-		
+
 	3. Set the x variable using the following code:
-	
+
 		```java
 		// yes, you use the _sine_ to get the X value because 0 deg is North
 		x = robot.getX() + Math.sin(Math.toRadians(absBearingDeg)) * e.getDistance();
 		```
-		
+
 		In a nutshell, this line computes the lentgh of the opposite side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's X value.
 	4. Set the y variable using the following code:
-	
+
 		```java
 		// yes, you use the _cosine_ to get the Y value because 0 deg is North
 		y = robot.getY() + Math.cos(Math.toRadians(absBearingDeg)) * e.getDistance();
 		```
-		
+
 		Similarly, this line computes the lentgh of the adjacent side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's Y value.
 7. Make an accessor method called getFutureX() which takes a long parameter (call it when) and returns a double. Use the following code to implement it:
 
@@ -289,7 +289,7 @@ double futureY = enemy.getFutureY(time);
 double absDeg = absoluteBearing(getX(), getY(), futureX, futureY);
 // turn the gun to the predicted x,y location
 setTurnGunRight(normalizeBearing(absDeg - getGunHeading()));
-``` 
+```
 
 **Sample robot:** [PredictiveShooter](http://mark.random-article.com/robocode/lessons/PredictiveShooter.java) uses the stuff described above to anticipate where his enemy will be. Match him up against Walls and watch the magic happen.
 
