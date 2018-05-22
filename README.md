@@ -52,8 +52,12 @@ A non-normalized bearing could be smaller than -180 or larger than +180. We like
 ```java
 // normalizes a bearing to between +180 and -180
 public double normalizeBearing(double angle) {
-	while (angle >  180) angle -= 360;
-	while (angle < -180) angle += 360;
+	while (angle >  180) {
+		angle -= 360;
+	}
+	while (angle < -180) {
+		angle += 360;
+	}
 	return angle;
 }
 ```
