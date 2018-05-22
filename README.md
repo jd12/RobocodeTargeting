@@ -12,14 +12,14 @@ One improvement we could make is to divorce gun movement from robot movement. Th
 
 ## Simple Aiming Formula
 
-We can easily turn the gun toward our opponent when we scan him by using a formula similar to the narrow beam scan: we find the difference between our tank heading ([getHeading()](http://mark.random-article.com/robocode/javadoc/robocode/Robot.html#getHeading())) and our gun heading ([getGunHeading()](http://mark.random-article.com/robocode/javadoc/robocode/Robot.html#getGunHeading())) and add the bearing to the target ([getBearing()](http://mark.random-article.com/robocode/javadoc/robocode/ScannedRobotEvent.html#getBearing())), like so:
+We can easily turn the gun toward our opponent when we scan him by using a formula similar to the narrow beam scan: we find the difference between our tank heading ([getHeading()](https://jd12.github.io/RobocodeInitial/robocode/Robot.html#getHeading())) and our gun heading ([getGunHeading()](https://jd12.github.io/RobocodeInitial/robocode/Robot.html#getGunHeading())) and add the bearing to the target ([getBearing()](https://jd12.github.io/RobocodeInitial/robocode/ScannedRobotEvent.html#getBearing())), like so:
 
 ```java
 setTurnGunRight(getHeading() - getGunHeading() + e.getBearing());
 ```
 ## Firepower Calculation Formula
 
-Another important aspect of firing is calculating the firepower of your bullet. The documentation for the [fire()](http://mark.random-article.com/robocode/javadoc/robocode/Robot.html#fire(double)) method explains that you can fire a bullet in the range of 0.1 to 3.0. It's a good idea to fire low-strength bullets when your enemy is far away, and high-strength bullets when he's close(you should reflect on why that is).
+Another important aspect of firing is calculating the firepower of your bullet. The documentation for the [fire()](https://jd12.github.io/RobocodeInitial/robocode/Robot.html#fire(double)) method explains that you can fire a bullet in the range of 0.1 to 3.0. It's a good idea to fire low-strength bullets when your enemy is far away, and high-strength bullets when he's close(you should reflect on why that is).
 
 You could use a series of if-else-if-else statements to determine firepower, based on whether the enemy is 100 pixels away, 200 pixels away, etc. But such constructs are a bit too rigid. After all, the range of possible firepower values falls along a continuum, not discrete blocks. A better approach is to use a formula. Here's an example:
 
@@ -45,7 +45,7 @@ As you may have noticed, Shooter has a problem: sometimes he turns his gun barre
 
 The problem is the result of getting a non-normalized bearing from the simple aiming formula above. A normalized bearing (like the kind you get in a ScannedRobotEvent) is a bearing between -180 and +180 degrees as depicted in the following illustration:
 
-![Image of bearings](http://mark.random-article.com/robocode/bearings.jpg)
+![Image of bearings](https://github.com/jd12/RobocodeBattlefieldBasics/blob/master/images/bearings.jpg)
 
 A non-normalized bearing could be smaller than -180 or larger than +180. We like to work with normalized bearings because they make for more efficient movement. To normalize a bearing, use the following function:
 
@@ -74,9 +74,9 @@ setTurnGunRight(normalizeBearing(turn));
 
 A problem with the Shooter and NormalizedShooter robots above is that they might fire before they've turned the gun toward the target. Even after you normalize the bearing, you could still fire prematurely.
 
-To avoid premature shooting, call the [getGunTurnRemaining()](http://mark.random-article.com/robocode/javadoc/robocode/AdvancedRobot.html#getGunTurnRemaining()) method to see how far away your gun is from the target and don't fire until you're close.
+To avoid premature shooting, call the [getGunTurnRemaining()](https://jd12.github.io/RobocodeInitial/robocode/AdvancedRobot.html#getGunTurnRemaining()) method to see how far away your gun is from the target and don't fire until you're close.
 
-Additionally, you cannot fire if the gun is "hot" from the last shot and calling `fire()` (or `setFire()`) will just waste a turn. We can test if the gun is cool by calling [getGunHeat()](http://mark.random-article.com/robocode/javadoc/robocode/Robot.html#getGunHeat()).
+Additionally, you cannot fire if the gun is "hot" from the last shot and calling `fire()` (or `setFire()`) will just waste a turn. We can test if the gun is cool by calling [getGunHeat()](https://jd12.github.io/RobocodeInitial/robocode/Robot.html#getGunHeat()).
 
 The following code snippet tests for both of these:
 
@@ -118,25 +118,27 @@ These steps are deliniated in such a way that you should be able to compile afte
 	1. first, call the parent's reset() method as super.reset() so that it will blank out all of its variables;
 	2. set all the AdvancedEnemyBot's private class variables to 0.
 5. Make a constructor for the class which simply calls the reset() method. (Your own, not the parent class'.)
-6. Write a new update() method which takes two parameters: a ScannedRobotEvent (call it e) and a Robot (call it robot -- ain't case-sensetivity grand?). (Note that you are not overriding the parent class' update() method because it takes only one parameter.)
+6. Write a new update() method which takes two parameters: a ScannedRobotEvent (call it event) and a Robot (call it robot -- ain't case-sensitivity grand?). (Note that you are not overriding the parent class' update() method because it takes only one parameter.)
 	Inside the AdvancedEnemyBot's update() method, please do the following:
 
 	1. Call the parent class' `update()` method with `super.update()`, passing it the ScannedRobotEvent that was passed to this method. (And yes, I realize that using the super keyword is unnecessary here, but it makes the code more obvious and self-documenting.)
 	2. Compute the absolute bearing between the robot and the enemy with the following code:
 
 		```java
-		double absBearingDeg = (robot.getHeading() + e.getBearing());
-		if (absBearingDeg < 0) absBearingDeg += 360;
+		double absBearingDeg = (robot.getHeading() + event.getBearing());
+		if (absBearingDeg < 0) {
+			absBearingDeg += 360;
+		}
 		```
 
 	3. Set the x variable using the following code:
 
 		```java
 		// yes, you use the _sine_ to get the X value because 0 deg is North
-		x = robot.getX() + Math.sin(Math.toRadians(absBearingDeg)) * e.getDistance();
+		x = robot.getX() + Math.sin(Math.toRadians(absBearingDeg)) * event.getDistance();
 		```
 
-		In a nutshell, this line computes the lentgh of the opposite side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's X value.
+		In a nutshell, this line computes the length of the opposite side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's X value.
 	4. Set the y variable using the following code:
 
 		```java
@@ -144,7 +146,7 @@ These steps are deliniated in such a way that you should be able to compile afte
 		y = robot.getY() + Math.cos(Math.toRadians(absBearingDeg)) * e.getDistance();
 		```
 
-		Similarly, this line computes the lentgh of the adjacent side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's Y value.
+		Similarly, this line computes the length of the adjacent side of a triangle (which may actually be negative in some cases), and then offsets it by our robot's Y value.
 7. Make an accessor method called getFutureX() which takes a long parameter (call it when) and returns a double. Use the following code to implement it:
 
 ```java
