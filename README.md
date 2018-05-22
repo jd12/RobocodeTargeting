@@ -175,7 +175,7 @@ Before we begin, let's revisit the concept of bearings.
 
 In contrast to a relative bearing, an absolute bearing is a value between 0 and +360 degrees. The following illustration shows both the relative and absolute bearing from one robot to another:
 
-![Image of absolute bearing](http://mark.random-article.com/robocode/rel_vs_norm_bearing.jpg)
+![Image of absolute bearing](./images/relative_absolute_bearing.jpg)
 
 Absolute bearings are often useful. You computed an absolute bearing from a relative bearing in your AdvancedEnemyBot class to get the x,y coordinates of an enemy.
 
@@ -218,7 +218,7 @@ If we wanted to be able to hit Walls (or any other robot) more often, we'd need 
 Using D = RxT we can figure out how long it will take a bullet to get there.
 
 * Distance: can be found by calling enemy.getDistance()
-* Rate: per the [Robocode FAQ](http://www.phil.uu.nl/java/robocode/robocode-faq.txt), a bullet travels at a rate of 20 - firepower * 3.
+* Rate: per the [Robocode FAQ](http://robowiki.net/wiki/Robocode/FAQ), a bullet travels at a rate of 20 - firepower * 3.
 * Time: we can compute the time by solving for it: D = RxT --> T = D/R
 
 The following code does it:
